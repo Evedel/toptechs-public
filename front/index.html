@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <title>Top Techs</title>
+    <!-- <script data-ad-client="ca-pub-2576703350747033" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+  </head>
+  <body>
+    <div id="app" class="main" data-v-app="">
+      <div class="form-header-wrapper style-card">
+        <div class="form-header-title">
+          <p class="form-text-header style-header-welcome">Top Techs in Australia.
+            <span class="style-header-description">
+              This ranking is simple. And this is why it is the reasonable one.
+            </span>
+          </p>
+        </div>
+        <div class="form-header-description tooltip-box">
+          <button class="style-header-header-description tooltip-button">How it works</button>
+          <p class="style-header-description tooltip-text">
+            Each day the helper script goes through the Australian newly posted vacancies<br>
+            If a job title does not have ingnore words in it (driver, doctor, carer, ...), the script looks for the job description<br>
+            If the job description contains more then 5 tech words, the jobs is considered a dev job and techs info is stored<br>
+            The <span style="font-weight: 300;">[number]</span>s everywhere are the times a tech was mentioned in job posting during the day/month/year/total<br>
+          </p>
+        </div>
+      </div>
+      <div class="body">
+        <div class="form-group-0">
+          <div class="form-side-box form-side-box-0 style-card">
+            <p>Top techs</p>
+            <p>over all time</p>
+            <hr>
+            <div class="in-list-wrapper">
+              <button
+                class="form-in-list-button style-in-list-button"
+                v-for="tech in all_techs"
+                v-bind:style="selectedColorStyleTech(tech.Name)"
+                v-on:click="clickTechName(tech.Name)">{{tech.Rank}}. {{tech.Name}} [{{amountToHuman(tech.Amount)}}]
+              </button>
+            </div>
+          </div>
+          <div class="form-side-box form-side-box-1 style-card">
+            <p>Top techs of</p>
+            <p>{{currentDate}}</p>
+            <hr>
+            <div class="in-list-wrapper">
+              <button
+                class="form-in-list-button style-in-list-button"
+                v-for="tech in top_techs"
+                v-bind:style="selectedColorStyleTech(tech.Name)"
+                v-on:click="clickTechName(tech.Name)">{{tech.Rank}}. {{tech.Name}} [{{amountToHuman(tech.Amount)}}]
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group-1">
+          <div class="central-box">
+            <div class="style-card form-text-box-switch-wrapper">
+              <div class="form-text-box-switch">
+                Show top by:
+              </div>
+              <button
+                class="style-in-list-button form-switch-top-button"
+                v-for="tab in allTabs"
+                v-bind:style="selectedColorStyleTabs(tab)"
+                v-on:click="switchTabTo(tab)">
+                {{tab}}
+              </button>
+              <button v-on:click="clickClearChartTechs()" class="style-in-list-button form-clear-button">Clear graph</button>
+            </div>
+            <div class="central-box-top style-card">
+              <div class="chart-container">
+                <canvas id="chart-canvas-techs"></canvas>  
+              </div>
+            </div>
+            <div class="central-box-bottom style-card">
+              <div class="chart-container">
+                <canvas id="chart-canvas-jobs"></canvas>  
+              </div>
+            </div>
+          </div>
+          <div class="form-side-box form-side-box-2 style-card">
+            <div class="form-cloud-box-0">
+              <p>{{currentDate}}</p>
+              <p>{{associationsCloudTechName}}</p>
+              <p>mentioned with</p>  
+            </div>
+            <!-- <hr class="form-cloud-hr"> -->
+            <div class="form-cloud-box-1">
+              <div id='word-cloud' class="style-world-cloud"></div>
+            </div>
+            <!-- <hr class="form-cloud-hr"> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.1.1/wordcloud2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.prod.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script id="rendered-js" src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+FROM    golang:1.15 as builder
+RUN     mkdir /build
+COPY    . /build
+WORKDIR /build
+RUN     go build -o app .
+
+FROM    debian:10
+COPY    --from=builder /build/app /
+WORKDIR /
+CMD     ["./app"]

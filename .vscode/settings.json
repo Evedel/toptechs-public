@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "RTR",
+      "database": "${workspaceFolder:HottestTechs}/back/hottesttechs.db"
+    }
+  ],
+  "sqltools.useNodeRuntime": true
+}

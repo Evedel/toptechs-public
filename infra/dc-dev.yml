@@ -1,0 +1,49 @@
+version: '3'
+services:
+  ingress:
+    image: nginx:1.19
+    volumes:
+      - ./nginx/nginx-dev.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../front:/app
+      - ../logs/nginx/access.log:/var/log/nginx/access.log
+      - ../logs/nginx/error.log:/var/log/nginx/error.log
+    ports:
+      - '80:80'
+    restart: unless-stopped
+
+  goapi:
+    image: golang:1.15
+    volumes:
+      - ../back:/app
+      - ../logs/api/:/var/log/api/
+    working_dir: /app
+    ports:
+      - '8090:8090'
+    command: sleep 99999
+    restart: unless-stopped
+
+  netdata:
+    image: netdata/netdata
+    volumes:
+      - ./netdata/netdata.conf:/etc/netdata/netdata.conf
+      - ./netdata/web_log.conf:/etc/netdata/go.d/web_log.conf
+      - ./netdata/nginx.conf:/etc/netdata/go.d/nginx.conf
+      - ../storage/netdatalib:/var/lib/netdata
+      - ../storage/netdatacache:/var/cache/netdata
+      - ../logs/nginx/access.log:/var/log/nginx/access.log
+      - ../logs/nginx/error.log:/var/log/nginx/error.log
+      - ../logs/netdata/access.log:/var/log/netdata/access.log
+      - ../logs/netdata/error.log:/var/log/netdata/error.log
+      - ../logs/netdata/debug.log:/var/log/netdata/debug.log
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+    ports:
+      - 19999:19999
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined

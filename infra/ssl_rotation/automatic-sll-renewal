@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+source ./env
+
+export GD_Key=$godaddy_key
+export GD_Secret=$godaddy_secret
+
+acme_sh="/root/.acme.sh/acme.sh"
+if [ ! -x $acme_sh ]; then
+  curl https://get.acme.sh | sh -s email=$owner_email
+fi
+
+/root/.acme.sh/acme.sh --issue --dns dns_gd -d $domain

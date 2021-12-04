@@ -1,0 +1,23 @@
+version: '3'
+services:
+
+  scrapper:
+    build:
+      context: ../scrap
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 100M
+    volumes:
+      - ../scrap:/app
+    working_dir: /app
+    command: python3 scrapper.py --withproxy
+
+  filerotator:
+    image: python:3.9
+    volumes:
+      - ../:/app
+    working_dir: /app
+    command: python3 ./infra/filerotator.py -d 14 -w 50 -m 14 ./backups ./scrap/hottesttechs.db -v

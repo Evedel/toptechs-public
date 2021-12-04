@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# AWS machines are in UTC timezone. 8am UTC is 7pm AEDT
+# crontab entry
+# 0 0 1 * * bash /home/ubuntu/HottestTechs/infra/ssl_rotation/renew-certs >> /home/ubuntu/HottestTechs/logs/renew-certs.log 2>&1 || curl -s --user 'api:YOUR_API_KEY' https://api.mailgun.net/v3/toptechs.xyz/messages -F from='Ubuntu Box <ubuntu-box@toptechs.xyz>' -F to=MY_EMAIL_ADDRESS -F subject='Critical Alarm' -F text='scapper failed'
+
+set -euxo pipefail
+
+spwd="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+cd $spwd
+echo "$spwd"
+dcx="/usr/local/bin/docker-compose"
+doc="/usr/bin/docker"
+
+$dcx run --rm ssl_updater
+$doc exec infra_ingress_1 nginx -s reload

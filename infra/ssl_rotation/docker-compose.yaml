@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ssl_updater:
+    build: .
+    volumes:
+      - /home/ubuntu/HottestTechs/acme.sh:/root/.acme.sh
+    working_dir: /app
+    command: /app/automatic-sll-renewal
+    restart: unless-stopped
